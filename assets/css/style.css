@@ -1,0 +1,15 @@
+html, body {
+    height: 100%;
+    background-color: #012B5D;
+    color: #f16441;
+    text-align: center;
+    /* font-family: 'Modak', cursive; */
+font-family: 'Sigmar One', cursive;
+/* font-family: 'Rubik Mono One', sans-serif; */
+    font-size: 20px;
+    display: block;
+}
+
+h3:hover {
+    border: 2px solid #f16441;;
+}
