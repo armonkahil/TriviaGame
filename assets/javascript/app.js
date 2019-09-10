@@ -54,6 +54,59 @@ $(document).ready(function() {
    answer4: "Houston",
    correct: "answer3"
   };
+  var question7 = {
+   quest: "What's the capital of Illinois?",
+   answer1: "Durham",
+   answer2: "New York",
+   answer3: "Miami",
+   answer4: "Chicago",
+   correct: "answer4"
+  };
+ 
+  var question8 = {
+   quest: "What's the capital of North Carolina?",
+   answer1: "Raleigh",
+   answer2: "New York",
+   answer3: "Miami",
+   answer4: "Houston",
+   correct: "answer1"
+  };
+ 
+  var question9 = {
+   quest: "What's the capital of New York?",
+   answer1: "Durham",
+   answer2: "New York",
+   answer3: "Miami",
+   answer4: "Houston",
+   correct: "answer2"
+  };
+ 
+  var question10 = {
+   quest: "What's the capital of Pennsylvania?",
+   answer1: "Durham",
+   answer2: "New York",
+   answer3: "Miami",
+   answer4: "Philadelphia",
+   correct: "answer4"
+  };
+ 
+  var question11 = {
+   quest: "What's the capital of Colorado?",
+   answer1: "Denver",
+   answer2: "New York",
+   answer3: "Miami",
+   answer4: "Houston",
+   correct: "answer1"
+  };
+ 
+  var question12 = {
+   quest: "What's the capital of Oregon?",
+   answer1: "Durham",
+   answer2: "New York",
+   answer3: "Portland",
+   answer4: "Houston",
+   correct: "answer3"
+  };
  
   triviaArray = [
    question1,
@@ -61,13 +114,19 @@ $(document).ready(function() {
    question3,
    question4,
    question5,
-   question6
+   question6,
+   question7,
+   question8,
+   question9,
+   question10,
+   question11,
+   question12
   ];
   var currentArray = [];
   var intervalId;
   var picked = false;
   var countNum = 0;
- 
+  var countmax = triviaArray.length; 
   // prevents the clock from being sped up unnecessarily
   var clockRunning = false;
   var time = 30;
@@ -75,6 +134,7 @@ $(document).ready(function() {
   //audio variables
   var wrongSound = new Audio("./assets/audio/Losing Horn.ogg");
   var rightSound = new Audio("./assets/audio/Exclamation Point.ogg");
+  var timeSound = new Audio("./assets/audio/jeopardy.mp3");
  
   function animateCSS(element, animationName, callback) {
    const node = document.querySelector(element);
@@ -106,7 +166,7 @@ $(document).ready(function() {
    if (!clockRunning) {
     intervalId = setInterval(count, 1000);
     clockRunning = true;
-    // anwsSelect();
+    timeSound.play();
    }
   }
  
@@ -154,6 +214,7 @@ $(document).ready(function() {
     $("#stageDisplay")
      .children()
      .remove();
+     start();
     triviaGame();
    });
   }
@@ -201,7 +262,7 @@ $(document).ready(function() {
    var ID = "triviaGame";
    var pick = "";
   report(ID);
-  start();
+ 
       currentArray.push(triviaArray[countNum]);
       setStage(currentArray);
       $("h3").on("click", function() {
