@@ -11,5 +11,6 @@ font-family: 'Sigmar One', cursive;
 }
 
 h3:hover {
-    border: 2px solid #f16441;;
+    border: 2px solid #f16441;
+    margin: 10 px auto;
 }
