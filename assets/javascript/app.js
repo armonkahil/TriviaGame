@@ -142,6 +142,12 @@ $(document).ready(function() {
   var clockSound = new Audio("../assets/audio/tick.mp3");
   clockSound.loop = true;
   timeSound.loop = true;
+
+  // ===========================================================================
+  // gif variables
+  // ===========================================================================
+  var rightGif = "https://media.giphy.com/media/26FPnsRww5DbqoPuM/giphy.gif";
+  var wrongGif = "https://media.giphy.com/media/jK8NUUpCBrqM0/giphy.gif";
   function animateCSS(element, animationName, callback) {
     const node = document.querySelector(element);
     node.classList.add("animated", animationName);
@@ -286,26 +292,38 @@ $(document).ready(function() {
       currentArray.push(triviaArray[countNum]);
       setStage(currentArray);
       $("h3").on("click", function() {
-        console.log("clicked on", this.id);
-        if (this.id == currentArray[countNum].correct) {
+          NewONE(this.id);
+          $("h3").off(); 
+       
+      });
+    }
+  }
+
+  function NewONE (ID) {
+     console.log("clicked on", ID);
+        if (ID == currentArray[countNum].correct) {
           rightSound.play();
           right++;
           console.log(right, " correctly picked");
+          var giphy = $("<img>");
+          giphy.attr("src", rightGif);
+          $("#stageDisplay").append(giphy);
         } else {
           wrongSound.play();
           wrong++;
           console.log(wrong, "wrongly picked");
         }
         countNum++;
+        $("h3").off();
         console.log(countNum);
         if (countNum < triviaArray.length) {
-          triviaGame();
+          console.log("passed through");
+          setTimeout(function () {
+            triviaGame()},3000);
         } else {
           stop();
           endStage();
         }
-      });
-    }
   }
 
   function Game() {
