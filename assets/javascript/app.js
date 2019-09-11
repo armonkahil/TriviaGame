@@ -135,11 +135,11 @@ $(document).ready(function() {
   var time = 30;
 
   //audio variables
-  var wrongSound = new Audio("../assets/audio/Losing Horn.ogg");
-  var rightSound = new Audio("../assets/audio/winner-bell.mp3");
-  var timeSound = new Audio("../assets/audio/jeopardy.mp3");
-  var startSound = new Audio("../assets/audio/dun_dun_1.mp3");
-  var clockSound = new Audio("../assets/audio/tick.mp3");
+  var wrongSound = new Audio("./assets/audio/the-price-is-right-losing-horn.mp3");
+  var rightSound = new Audio("./assets/audio/winner-bell.mp3");
+  var timeSound = new Audio("./assets/audio/jeopardy.mp3");
+  var startSound = new Audio("./assets/audio/dun_dun_1.mp3");
+  var clockSound = new Audio("./assets/audio/tick.mp3");
   clockSound.loop = true;
   timeSound.loop = true;
 
@@ -148,6 +148,7 @@ $(document).ready(function() {
   // ===========================================================================
   var rightGif = "https://media.giphy.com/media/26FPnsRww5DbqoPuM/giphy.gif";
   var wrongGif = "https://media.giphy.com/media/jK8NUUpCBrqM0/giphy.gif";
+  var endGif = "https://media.giphy.com/media/AkLGHCYGv43uw/giphy.gif";
   function animateCSS(element, animationName, callback) {
     const node = document.querySelector(element);
     node.classList.add("animated", animationName);
@@ -196,6 +197,7 @@ $(document).ready(function() {
     $("#display").text("Time remaining: " + converted + " seconds");
     if (converted <= 0) {
       stop();
+      endStage();
     }
   }
 
@@ -217,7 +219,7 @@ $(document).ready(function() {
       .remove();
     // delay function so sound plays is delayed with the same delay of starting banner.
     setTimeout(function() {
-      startSound.play();
+      startSound.play()
     }, 1000);
     $("#display").text("Time remaining: " + time + " seconds");
     $("#stageDisplay").append("<h1> Click me to start </h1>");
@@ -273,6 +275,13 @@ $(document).ready(function() {
     var unAnswered = triviaArray.length - wrong - right;
     hThree.text("Unanswered: " + unAnswered);
     $("#stageDisplay").append(hThree);
+    var giphy = $("<img>");
+    giphy.attr("src", endGif);
+    $("#stageDisplay").append(giphy);
+    setTimeout(function () { 
+      start();
+      triviaGame();},10000);
+
   }
 
   //
@@ -299,26 +308,43 @@ $(document).ready(function() {
     }
   }
 
-  function NewONE (ID) {
-     console.log("clicked on", ID);
-        if (ID == currentArray[countNum].correct) {
-          rightSound.play();
+  function rightAnswer (id) {
+    rightSound.play();
           right++;
           console.log(right, " correctly picked");
           var giphy = $("<img>");
           giphy.attr("src", rightGif);
+          giphy.attr("animation-duration", "3s");
           $("#stageDisplay").append(giphy);
-        } else {
+  }
+
+  function wrongAnswer (id) {
+         var newTarget = "#"+ currentArray[countNum].correct;
+        animateCSS(newTarget,'wobble')
+          var giphy = $("<img>");
+          giphy.attr("src", wrongGif);
+          giphy.attr("animation-duration", "3s");
+          $("#stageDisplay").append(giphy)
           wrongSound.play();
           wrong++;
           console.log(wrong, "wrongly picked");
+  }
+
+  function NewONE (ID) {
+     console.log("clicked on", ID);
+        if (ID == currentArray[countNum].correct) {
+          rightAnswer(ID)
+        } else {
+          wrongAnswer(ID)
         }
         countNum++;
         $("h3").off();
         console.log(countNum);
         if (countNum < triviaArray.length) {
           console.log("passed through");
+          stop()
           setTimeout(function () {
+            start()
             triviaGame()},3000);
         } else {
           stop();
