@@ -74,26 +74,26 @@ $(document).ready(function() {
   };
 
   var question9 = {
-    quest: "What's the capital of New York?",
+    quest: "What's the capital of Connecticut?",
     answer1: "Durham",
-    answer2: "New York",
+    answer2: "Boston",
     answer3: "Miami",
     answer4: "Houston",
     correct: "answer2"
   };
 
   var question10 = {
-    quest: "What's the capital of Pennsylvania?",
+    quest: "What's the capital of Utah?",
     answer1: "Durham",
     answer2: "New York",
     answer3: "Miami",
-    answer4: "Philadelphia",
+    answer4: "Salt Lake City",
     correct: "answer4"
   };
 
   var question11 = {
-    quest: "What's the capital of Colorado?",
-    answer1: "Denver",
+    quest: "What's the capital of Tennessee?",
+    answer1: "Nashville",
     answer2: "New York",
     answer3: "Miami",
     answer4: "Houston",
@@ -101,10 +101,10 @@ $(document).ready(function() {
   };
 
   var question12 = {
-    quest: "What's the capital of Oregon?",
+    quest: "What's the capital of Texas?",
     answer1: "Durham",
     answer2: "New York",
-    answer3: "Portland",
+    answer3: "Dallas",
     answer4: "Houston",
     correct: "answer3"
   };
@@ -140,6 +140,7 @@ $(document).ready(function() {
   var timeSound = new Audio("./assets/audio/jeopardy.mp3");
   var startSound = new Audio("./assets/audio/dun_dun_1.mp3");
   var clockSound = new Audio("./assets/audio/tick.mp3");
+  var endGameSound = new Audio("./assets/audio/halo.mp3");
   clockSound.loop = true;
   timeSound.loop = true;
 
@@ -210,21 +211,21 @@ $(document).ready(function() {
     }
     return seconds;
   }
-
+//sets up initial game stage
   function startStage() {
     var ID = "startStage";
     report(ID);
-    $("#stageDisplay")
-      .children()
-      .remove();
+    //remove any unwanted html
+    $("#stageDisplay").empty();
     // delay function so sound plays is delayed with the same delay of starting banner.
     setTimeout(function() {
       startSound.play()
     }, 1000);
+  
     $("#display").text("Time remaining: " + time + " seconds");
     $("#stageDisplay").append("<h1> Click me to start </h1>");
     $("#stageDisplay h1").attr("id", "clickMe");
-
+//adds event listener for user to start the game
     $("#clickMe").on("click", function() {
       $("#stageDisplay").empty();
       start();
@@ -279,11 +280,14 @@ $(document).ready(function() {
     giphy.attr("src", endGif);
     $("#stageDisplay").append(giphy);
     setTimeout(function () { 
+      currentArray=[];
+      time=30;
+      $("#display").text("Time remaining: " + time + " seconds");
       start();
       triviaGame();},10000);
 
   }
-
+  
   //
   // =============================================================================
   // // ==========================================================================
@@ -297,6 +301,7 @@ $(document).ready(function() {
     var ID = "triviaGame";
     var pick = "";
     report(ID);
+
     if (clockRunning) {
       currentArray.push(triviaArray[countNum]);
       setStage(currentArray);
@@ -355,6 +360,6 @@ $(document).ready(function() {
   function Game() {
     startStage();
   }
-
+//starts game
   Game();
 });
