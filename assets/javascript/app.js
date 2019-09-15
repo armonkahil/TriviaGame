@@ -123,17 +123,15 @@ $(document).ready(function() {
     question11,
     question12
   ];
-  
+
   var right = 0;
   var wrong = 0;
   var currentArray = [];
   var intervalId;
-  var intervalId1;
-  var picked = false;
   var countNum = 0;
   // prevents the clock from being sped up unnecessarily
   var clockRunning = false;
-  var time = 30;
+  var time = 10;
 
   //audio variables
   var wrongSound = new Audio("./assets/audio/the-price-is-right-losing-horn.mp3");
@@ -179,6 +177,7 @@ $(document).ready(function() {
   function start() {
     // DONE: Use setInterval to start the count here and set the clock to running.
     if (!clockRunning) {
+      $("#display").text("Time remaining: " + time + " seconds");
       intervalId = setInterval(count, 1000);
       clockRunning = true;
       clockSound.play();
@@ -190,6 +189,7 @@ $(document).ready(function() {
     clearInterval(intervalId);
     clockRunning = false;
     clockSound.pause();
+    time=10;
   }
 
   function count() {
@@ -231,7 +231,7 @@ $(document).ready(function() {
       $("#stageDisplay").empty();
       start();
 
-      triviaGame();
+      triviaGame(currentArray);
     });
   }
 
@@ -286,11 +286,11 @@ $(document).ready(function() {
     $("#stageDisplay").append(hFour);
      $("#startOver").on('click', function () {
       currentArray=[];
-      time=30;
+      time=10;
+      countNum=0;
       $("#stageDisplay").empty();
       $("#display").text("Time remaining: " + time + " seconds");
-      start();
-      triviaGame();
+      startStage()
     });
   }
   
@@ -305,7 +305,6 @@ $(document).ready(function() {
 
   function triviaGame() {
     var ID = "triviaGame";
-    var pick = "";
     report(ID);
 
     if (clockRunning) {
@@ -356,7 +355,7 @@ $(document).ready(function() {
           stop()
           setTimeout(function () {
             start()
-            triviaGame()},3000);
+            triviaGame()},5000);
         } else {
           stop();
           endStage();
