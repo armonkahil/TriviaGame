@@ -1,17 +1,27 @@
 html, body {
     height: 100%;
-    background-color: #012B5D;
-    color: #f16441;
+    background-color: #06342D;
+    color: #EEB04D;
     text-align: center;
-    /* font-family: 'Modak', cursive; */
-font-family: 'Sigmar One', cursive;
+    font-family: 'Modak', cursive;
+/* font-family: 'Sigmar One', cursive; */
 /* font-family: 'Rubik Mono One', sans-serif; */
     font-size: 20px;
     display: block;
 }
 
 h3:hover, #startOver {
-    border: 2px solid #f16441;
-    background: pink;
+    border: 2px solid #F26841;
+    background: #1D1B40;
     margin: 10 px auto;
+}
+
+
+#stageDisplay {
+    background:#FFFFFE;
+    
+}
+
+#stageOver {
+    margin-top: 5px;
 }
