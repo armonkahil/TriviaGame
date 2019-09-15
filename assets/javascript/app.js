@@ -258,7 +258,7 @@ $(document).ready(function() {
     var unAnswered = triviaArray.length - wrong - right;
     hThree.text("Unanswered: " + unAnswered);
     $("#stageDisplay").append(hThree);
-    var giphy = $('<iframe width="560" height="315" src="https://www.youtube.com/embed/232NWVGHRQI?start=47&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; " allowfullscreen></iframe>');
+    var giphy = $('<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" width="50%" height="315" src="https://www.youtube.com/embed/232NWVGHRQI?start=47&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; " allowfullscreen></iframe></div>');
     // giphy.attr("src", endGif);
     $("#stageDisplay").append(giphy);
      var hFour = $("<h1>");
