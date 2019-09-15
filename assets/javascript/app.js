@@ -304,6 +304,7 @@ $(document).ready(function() {
           right++;
           console.log(right, " correctly picked");
           var giphy = $("<img>");
+          giphy.addClass("img-fluid");
           giphy.attr("src", rightGif);
           giphy.attr("animation-duration", "3s");
           $("#stageDisplay").append(giphy);
@@ -313,6 +314,7 @@ $(document).ready(function() {
          var newTarget = "#"+ currentArray[countNum].correct;
         animateCSS(newTarget,'wobble')
           var giphy = $("<img>");
+          giphy.addClass("img-fluid");
           giphy.attr("src", wrongGif);
           giphy.attr("animation-duration", "3s");
           $("#stageDisplay").append(giphy)
