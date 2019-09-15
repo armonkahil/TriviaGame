@@ -123,6 +123,7 @@ $(document).ready(function() {
     question11,
     question12
   ];
+  
   var right = 0;
   var wrong = 0;
   var currentArray = [];
@@ -279,13 +280,18 @@ $(document).ready(function() {
     var giphy = $("<img>");
     giphy.attr("src", endGif);
     $("#stageDisplay").append(giphy);
-    setTimeout(function () { 
+     var hFour = $("<h1>");
+    hFour.attr("id","startOver");
+    hFour.text("Start Over?");
+    $("#stageDisplay").append(hFour);
+     $("#startOver").on('click', function () {
       currentArray=[];
       time=30;
+      $("#stageDisplay").empty();
       $("#display").text("Time remaining: " + time + " seconds");
       start();
-      triviaGame();},10000);
-
+      triviaGame();
+    });
   }
   
   //

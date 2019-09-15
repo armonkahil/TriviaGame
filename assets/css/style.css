@@ -10,7 +10,7 @@ font-family: 'Sigmar One', cursive;
     display: block;
 }
 
-h3:hover {
+h3:hover, #startOver {
     border: 2px solid #f16441;
     background: pink;
     margin: 10 px auto;
