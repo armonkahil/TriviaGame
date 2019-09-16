@@ -167,7 +167,7 @@ $(document).ready(function() {
    clearInterval(intervalId);
    clockRunning = false;
    clockSound.pause();
-   time = 10;
+   time = 25;
   }
   //clock counter
   function count() {
