@@ -1,7 +1,6 @@
-# TriviaGame
-
-## [Trivia Game](https://armonkahil.github.io/TriviaGame/)
-## Trivia game using JavaScript for the logic and jQuery to manipulate HTML.
+# [Trivia Game](https://armonkahil.github.io/TriviaGame/)
+![Landing Page](assets/images/cover.png)
+## A JavaScript assignment using logic and jQuery to manipulate HTML.
 
 * You'll create a trivia game that shows only one question until the player answers it or their time runs out.
 
@@ -14,4 +13,6 @@
 
 * On the final screen, show the number of correct answers, incorrect answers, and an option to restart the game (without reloading the page).
 
-# Full Disclosure: I'm a Bears fan.
+# [Full Disclosure: I'm a Bears fan.](https://www.chicagobears.com)
+
+Packer fans click [here](https://www.youtube.com/embed/232NWVGHRQI?start=47&autoplay=1)

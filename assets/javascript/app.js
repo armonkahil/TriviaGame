@@ -106,6 +106,7 @@ $(document).ready(function() {
   //counter variables for questions
   var right = 0;
   var wrong = 0;
+  var unanswered = 0;
   var currentArray = [];
   //var to store interval
   var intervalId;
@@ -174,10 +175,7 @@ $(document).ready(function() {
    time--;
    var converted = timeConverter(time);
    $("#display").text("Time remaining: " + converted + " seconds");
-   if (converted <= 0) {
-    stop();
-    endStage();
-   }
+   
   }
   //converts count to display properly
   function timeConverter(t) {
@@ -251,8 +249,8 @@ $(document).ready(function() {
    hTwo.text("Wrong: " + wrong);
    $("#stageDisplay").append(hTwo);
    var hThree = $("<h1>");
-   var unAnswered = triviaArray.length - wrong - right;
-   hThree.text("Unanswered: " + unAnswered);
+   var unAnswered1 = unanswered + (triviaArray.length - wrong - right);
+   hThree.text("Unanswered: " + unAnswered1);
    $("#stageDisplay").append(hThree);
    //this was tricky. Chrome does not allow videos to autoplay or loop by default. So in the interest of time in tying to figure it out, I found a video that just a loop of the same video.
    var giphy = $('<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" width="50%" height="315" src="https://www.youtube.com/embed/232NWVGHRQI?start=47&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; " allowfullscreen></iframe></div>');
@@ -301,6 +299,7 @@ $(document).ready(function() {
      $("h3").off();
  
     });
+   
    }
   }
   //if answer is right
@@ -327,15 +326,30 @@ $(document).ready(function() {
    wrongSound.play();
    wrong++;
   }
+
+  function outOFtime() {
+   var newTarget = "#" + currentArray[countNum].correct;
+   animateCSS(newTarget, 'wobble')
+   var giphy = $("<img>");
+   giphy.addClass("img-fluid");
+   giphy.attr("height", "400");
+   giphy.attr("src", wrongGif);
+   giphy.attr("animation-duration", "3s");
+   $("#stageDisplay").append(giphy)
+   wrongSound.play();
+   unanswered++;
+  }
  
   function answerCheck(ID) {
    console.log("clicked on", ID);
    //  checks id of clicked on versus the correct answer for the question
-   if (ID == currentArray[countNum].correct) {
+   if (ID == currentArray[countNum].correct && time > 0) {
     rightAnswer(currentArray[countNum].correct)
-   } else {
+   } else if (time > 0) {
     wrongAnswer(currentArray[countNum].correct)
    }
+
+
    //question counter is incremented
    countNum++;
    //removes event listener
