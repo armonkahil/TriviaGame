@@ -118,7 +118,7 @@ $(document).ready(() => {
   let countNum = 0
   // prevents the clock from being sped up unnecessarily
   let clockRunning = false
-  let time = 25
+  let time = 3
 
   // audio variables
   const wrongSound = new Audio(
@@ -132,8 +132,8 @@ $(document).ready(() => {
   // ===========================================================================
   // gif variables
   // ===========================================================================
-  const rightGif = 'https://media.giphy.com/media/26FPnsRww5DbqoPuM/giphy.gif'
-  const wrongGif = 'https://media.giphy.com/media/jK8NUUpCBrqM0/giphy.gif'
+  const rightGif = './assets/images/right.webp'
+  const wrongGif = './assets/images/wrong.gif'
   // =============================================================================
   // animate.css function
   // =============================================================================
@@ -149,17 +149,6 @@ $(document).ready(() => {
     }
 
     node.addEventListener('animationend', handleAnimationEnd)
-  }
-
-  // =============================================================================
-  // console reporting function
-  // =============================================================================
-  function report(section) {
-    const divider = '------------------------------------'
-    console.log(' ')
-    console.log(divider)
-    console.log('running ', section)
-    console.log(divider)
   }
 
   // converts count to display properly
@@ -182,7 +171,7 @@ $(document).ready(() => {
 
   // starts clock
   const start = () => {
-    if (!clockRunning) {
+    if (!clockRunning && time > 0) {
       $('#display').text(`Time remaining: ${time} seconds`)
       intervalId = setInterval(count, 1000)
       clockRunning = true
@@ -194,55 +183,38 @@ $(document).ready(() => {
     clearInterval(intervalId)
     clockRunning = false
     clockSound.pause()
-    time = 25
+    time = 3
   }
-  // sets up initial game stage
-  const startStage = () => {
-    const ID = 'startStage'
-    report(ID)
-    // remove any unwanted html
-    $('#stageDisplay').empty()
-    // delay function so sound plays is delayed with the same delay of starting banner.
-    setTimeout(() => {
-      startSound.play()
-    }, 1000)
-    $('#display').text(`Time remaining: ${time} seconds`)
-    $('#stageDisplay').append('<h1> Click me to start </h1>')
-    $('#stageDisplay h1').attr('id', 'clickMe')
-    // adds event listener for user to start the game
-    $('#clickMe').on('click', () => {
-      $('#stageDisplay').empty()
-      start()
-      triviaGame(currentArray)
-    })
-  }
+
   // updates stage with current question
   const setStage = current => {
+    const { quest, answer1, answer2, answer3, answer4 } = current[countNum]
     $('#stageDisplay').children().remove()
     const newDiv = $('<div>')
     const quest1 = $('<h1>')
     quest1.attr('id', 'question')
-    quest1.text(current[countNum].quest)
+    quest1.text(quest)
     newDiv.append(quest1)
     newDiv.append('<hr>')
     const ans1 = $('<h3>')
     ans1.attr('id', 'answer1')
-    ans1.text(current[countNum].answer1)
+    ans1.text(answer1)
     newDiv.append(ans1)
     const ans2 = $('<h3>')
     ans2.attr('id', 'answer2')
-    ans2.text(current[countNum].answer2)
+    ans2.text(answer2)
     newDiv.append(ans2)
     const ans3 = $('<h3>')
     ans3.attr('id', 'answer3')
-    ans3.text(current[countNum].answer3)
+    ans3.text(answer3)
     newDiv.append(ans3)
     const ans4 = $('<h3>')
     ans4.attr('id', 'answer4')
-    ans4.text(current[countNum].answer4)
+    ans4.text(answer4)
     newDiv.append(ans4)
     $('#stageDisplay').html(newDiv)
   }
+
   // updates stage with number of correct, incorrect, and nonanswers
   const endStage = () => {
     $('#stageDisplay').empty()
@@ -273,13 +245,15 @@ $(document).ready(() => {
       currentArray = []
       time = 25
       countNum = 0
+      unanswered = 0
+      right = 0
+      wrong = 0
       $('#stageDisplay').empty()
       $('#display').text(`Time remaining: ${time} seconds`)
       startStage()
     })
   }
 
-  //
   // =============================================================================
   // // ==========================================================================
   // // =======================================================================
@@ -289,8 +263,6 @@ $(document).ready(() => {
   // =============================================================================
 
   const triviaGame = () => {
-    const ID = 'triviaGame'
-    report(ID)
     // if clock is running
     if (clockRunning) {
       // push question into dummy array
@@ -298,14 +270,16 @@ $(document).ready(() => {
       // update stage with current question
       setStage(currentArray)
       // event listener added to choices given
-      $('h3').on('click', function () {
+      $('h3').on('click', event => {
+        const { id } = event.target
         // sends ID of h3 clicked on to answer function
-        answerCheck(this.id)
+        answerCheck(id)
         // removes event listener to prevent clicking on other answers
         $('h3').off()
       })
     }
   }
+
   const gifBuilder = gifToAppend => {
     const giphy = $('<img>')
     giphy.addClass('img-fluid')
@@ -315,22 +289,23 @@ $(document).ready(() => {
     $('#stageDisplay').append(giphy)
   }
 
-  // if answer is right
-  const rightAnswer = () => {
-    rightSound.play()
-    right++
-    gifBuilder(rightGif)
-  }
-  // if answer is wrong
-  const wrongAnswer = () => {
-    const newTarget = `#${currentArray[countNum].correct}`
-    animateCSS(newTarget, 'wobble')
-    gifBuilder(wrongGif)
-    wrongSound.play()
-    wrong++
+  const newAnswers = (answer, correctAnswer) => {
+    switch (answer) {
+      case true:
+        rightSound.play()
+        right++
+        gifBuilder(rightGif)
+        break
+      default:
+        animateCSS(`#${correctAnswer}`, 'wobble')
+        gifBuilder(wrongGif)
+        wrongSound.play()
+        wrong++
+        break
+    }
   }
 
-  const outOFtime = () => {
+  const outOfTime = () => {
     const newTarget = `#${currentArray[countNum].correct}`
     animateCSS(newTarget, 'wobble')
     gifBuilder(wrongGif)
@@ -338,12 +313,14 @@ $(document).ready(() => {
     unanswered++
   }
 
-  const answerCheck = ID => {
+  const answerCheck = answer => {
     //  checks id of clicked on versus the correct answer for the question
-    if (ID == currentArray[countNum].correct && time > 0) {
-      rightAnswer(currentArray[countNum].correct)
+    if (answer === currentArray[countNum].correct && time > 0) {
+      // rightAnswer()
+      newAnswers(true)
     } else if (time > 0) {
-      wrongAnswer(currentArray[countNum].correct)
+      // wrongAnswer(currentArray[countNum].correct)
+      newAnswers(false, currentArray[countNum].correct)
     }
 
     // question counter is incremented
@@ -363,7 +340,24 @@ $(document).ready(() => {
       endStage()
     }
   }
-
+  // sets up initial game stage
+  const startStage = () => {
+    // remove any unwanted html
+    $('#stageDisplay').empty()
+    // delay function so sound plays is delayed with the same delay of starting banner.
+    setTimeout(() => {
+      startSound.play()
+    }, 1000)
+    $('#display').text(`Time remaining: ${time} seconds`)
+    $('#stageDisplay').append('<h1> Click me to start </h1>')
+    $('#stageDisplay h1').attr('id', 'clickMe')
+    // adds event listener for user to start the game
+    $('#clickMe').on('click', () => {
+      $('#stageDisplay').empty()
+      start()
+      triviaGame(currentArray)
+    })
+  }
   const Game = () => startStage()
 
   // starts game
