@@ -111,7 +111,7 @@ $(document).ready(() => {
   // counter variables for questions
   let right = 0
   let wrong = 0
-  let unanswered = 0
+  let unanswered = 10
   let currentArray = []
   // var to store interval
   let intervalId
@@ -165,10 +165,17 @@ $(document).ready(() => {
   // clock counter
   const count = () => {
     time--
-    const converted = timeConverter(time)
-    $('#display').text(`Time remaining: ${converted} seconds`)
+    updateClock()
+    if (time === 0) {
+      stop()
+      endStage()
+    }
   }
 
+  const updateClock = () => {
+    const converted = timeConverter(time)
+    return $('#display').text(`Time remaining: ${converted} seconds`)
+  }
   // starts clock
   const start = () => {
     if (!clockRunning && time > 0) {
@@ -215,21 +222,6 @@ $(document).ready(() => {
     $('#stageDisplay').html(newDiv)
   }
 
-  const startOverAgain = () => {
-    animateCSS('#startOver', 'tada')
-    // this event restarts the game when clicked on
-    $('#startOver').on('click', () => {
-      currentArray = []
-      time = 25
-      countNum = 0
-      unanswered = 0
-      right = 0
-      wrong = 0
-      $('#stageDisplay').empty()
-      $('#display').text(`Time remaining: ${time} seconds`)
-      startStage()
-    })
-  }
   // updates stage with number of correct, incorrect, and nonanswers
   const endStage = () => {
     $('#stageDisplay').empty()
@@ -244,7 +236,7 @@ $(document).ready(() => {
     $('#stageDisplay').append(hThree)
     // this was tricky. Chrome does not allow videos to autoplay or loop by default. So in the interest of time in tying to figure it out, I found a video that just a loop of the same video.
     const giphy = $(
-      '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" width="50%" height="315" src="https://www.youtube.com/embed/232NWVGHRQI?start=47&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; " allowfullscreen></iframe></div>'
+      '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" width="50%" height="315" src="https://www.youtube-nocookie.com/embed/232NWVGHRQI?start=47&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; " allowfullscreen></iframe></div>'
     )
     // giphy.attr("src", endGif);
     $('#stageDisplay').append(giphy)
@@ -265,6 +257,8 @@ $(document).ready(() => {
         answerCheck(id)
         $('h3').off()
       })
+    } else {
+      answerCheck(false, currentArray[countNum].correct)
     }
   }
 
@@ -282,6 +276,7 @@ $(document).ready(() => {
       case true:
         rightSound.play()
         right++
+        unanswered--
         gifBuilder(rightGif)
         break
       default:
@@ -289,16 +284,9 @@ $(document).ready(() => {
         gifBuilder(wrongGif)
         wrongSound.play()
         wrong++
+        unanswered--
         break
     }
-  }
-
-  const outOfTime = () => {
-    const newTarget = `#${currentArray[countNum].correct}`
-    animateCSS(newTarget, 'wobble')
-    gifBuilder(wrongGif)
-    wrongSound.play()
-    unanswered++
   }
 
   const answerCheck = answer => {
@@ -344,6 +332,22 @@ $(document).ready(() => {
       $('#stageDisplay').empty()
       start()
       triviaGame(currentArray)
+    })
+  }
+
+  const startOverAgain = () => {
+    animateCSS('#startOver', 'tada')
+    // this event restarts the game when clicked on
+    $('#startOver').on('click', () => {
+      currentArray = []
+      time = 25
+      countNum = 0
+      unanswered = 0
+      right = 0
+      wrong = 0
+      $('#stageDisplay').empty()
+      $('#display').text(`Time remaining: ${time} seconds`)
+      startStage()
     })
   }
   const Game = () => startStage()
