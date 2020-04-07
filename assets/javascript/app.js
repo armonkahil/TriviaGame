@@ -1,5 +1,8 @@
 /* eslint-disable no-plusplus */
 $(document).ready(() => {
+  // ============================================================================
+  // Global Variables
+  // ============================================================================
   const question1 = {
     quest:
       'In Super Bowl XXXII, with 1:45 left on the clock, what did Coach Holmgren tell his defense?',
@@ -125,9 +128,15 @@ $(document).ready(() => {
   const startSound = new Audio('./assets/audio/dun_dun_1.mp3')
   const clockSound = new Audio('./assets/audio/tick.mp3')
   clockSound.loop = true
+
+  // ===========================================================================
+  // gif variables
+  // ===========================================================================
   const rightGif = './assets/images/right.webp'
   const wrongGif = './assets/images/wrong.gif'
-
+  // =============================================================================
+  // animate.css function
+  // =============================================================================
   const animateCSS = (element, animationName, callback) => {
     const node = document.querySelector(element)
     node.classList.add('animated', animationName)
@@ -233,6 +242,7 @@ $(document).ready(() => {
     const hThree = $('<h1>')
     hThree.text(`Unanswered: ${unanswered}`)
     $('#stageDisplay').append(hThree)
+    // this was tricky. Chrome does not allow videos to autoplay or loop by default. So in the interest of time in tying to figure it out, I found a video that just a loop of the same video.
     const giphy = $(
       '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" width="50%" height="315" src="https://www.youtube.com/embed/232NWVGHRQI?start=47&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; " allowfullscreen></iframe></div>'
     )
@@ -292,14 +302,18 @@ $(document).ready(() => {
   }
 
   const answerCheck = answer => {
+    //  checks id of clicked on versus the correct answer for the question
     if (answer === currentArray[countNum].correct && time > 0) {
+      // rightAnswer()
       newAnswers(true)
     } else if (time > 0) {
+      // wrongAnswer(currentArray[countNum].correct)
       newAnswers(false, currentArray[countNum].correct)
     }
 
     // question counter is incremented
     countNum++
+    // removes event listener
     $('h3').off()
     // if question counter is still less that array
     if (countNum < triviaArray.length) {
@@ -316,6 +330,7 @@ $(document).ready(() => {
   }
   // sets up initial game stage
   const startStage = () => {
+    // remove any unwanted html
     $('#stageDisplay').empty()
     // delay function so sound plays is delayed with the same delay of starting banner.
     setTimeout(() => {
@@ -324,6 +339,7 @@ $(document).ready(() => {
     $('#display').text(`Time remaining: ${time} seconds`)
     $('#stageDisplay').append('<h1> Click me to start </h1>')
     $('#stageDisplay h1').attr('id', 'clickMe')
+    // adds event listener for user to start the game
     $('#clickMe').on('click', () => {
       $('#stageDisplay').empty()
       start()
@@ -332,5 +348,6 @@ $(document).ready(() => {
   }
   const Game = () => startStage()
 
+  // starts game
   Game()
 })
