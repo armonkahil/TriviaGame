@@ -1,8 +1,5 @@
 /* eslint-disable no-plusplus */
 $(document).ready(() => {
-  // ============================================================================
-  // Global Variables
-  // ============================================================================
   const question1 = {
     quest:
       'In Super Bowl XXXII, with 1:45 left on the clock, what did Coach Holmgren tell his defense?',
@@ -118,7 +115,7 @@ $(document).ready(() => {
   let countNum = 0
   // prevents the clock from being sped up unnecessarily
   let clockRunning = false
-  let time = 3
+  let time = 25
 
   // audio variables
   const wrongSound = new Audio(
@@ -128,15 +125,9 @@ $(document).ready(() => {
   const startSound = new Audio('./assets/audio/dun_dun_1.mp3')
   const clockSound = new Audio('./assets/audio/tick.mp3')
   clockSound.loop = true
-
-  // ===========================================================================
-  // gif variables
-  // ===========================================================================
   const rightGif = './assets/images/right.webp'
   const wrongGif = './assets/images/wrong.gif'
-  // =============================================================================
-  // animate.css function
-  // =============================================================================
+
   const animateCSS = (element, animationName, callback) => {
     const node = document.querySelector(element)
     node.classList.add('animated', animationName)
@@ -183,7 +174,7 @@ $(document).ready(() => {
     clearInterval(intervalId)
     clockRunning = false
     clockSound.pause()
-    time = 3
+    time = 25
   }
 
   // updates stage with current question
@@ -242,7 +233,6 @@ $(document).ready(() => {
     const hThree = $('<h1>')
     hThree.text(`Unanswered: ${unanswered}`)
     $('#stageDisplay').append(hThree)
-    // this was tricky. Chrome does not allow videos to autoplay or loop by default. So in the interest of time in tying to figure it out, I found a video that just a loop of the same video.
     const giphy = $(
       '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" width="50%" height="315" src="https://www.youtube.com/embed/232NWVGHRQI?start=47&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; " allowfullscreen></iframe></div>'
     )
